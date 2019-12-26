@@ -38,7 +38,7 @@ import binascii
 import struct
 
 BLOCK_SIZE = 512
-name = "/mnt/data/canon_eos_1v/FI000000.EFD"
+name = "./efd/FI000000.EFD"
 def get_size(edf_file):
    edf_file.seek(0,2)
    size = edf_file.tell()
@@ -66,7 +66,7 @@ edf.close()
 
 #get the film ID
 meta_block = bytearray(block_array[0])
-print "film id: ", meta_block[38]
+print("film id: ", meta_block[38])
 
 #get the date
 #Month - byte 44 
@@ -81,11 +81,11 @@ minute = meta_block[47]
 seconds = meta_block[48]
 
 
-print "time stamp: ", year, "-", month, "-", day, " ", hour, ":", minute, ":", seconds
+print("time stamp: ", year, "-", month, "-", day, " ", hour, ":", minute, ":", seconds)
 
 for i in range(0, len(block_array)):
    frame_byte = bytearray(block_array[i])
-   print frame_byte[24]
+   print(frame_byte[24])
    #for j in range(len(block_array[i])):
    #   if 
    #if my_byte == block_array[i][0]
