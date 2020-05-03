@@ -41,24 +41,47 @@ SET_INTERFACE     = 0x11
 SYNCH_FRAME       = 0x12
 
 dev = usb.core.find(idVendor=0x04a9, idProduct=0x3040)
-#for d in dev:
-#   print d
 
 # was it found?
 if dev is None:
    raise ValueError('Device not found')
 
+#dev.set_configuration()
+#
+#cfg = dev.get_active_configuration()
+#intf = cfg[(0,0)]
+#
+#ep = usb.util.find_descriptor(intf
+
+for cfg in dev:
+    print("Configuration Value: ", str(cfg.bConfigurationValue) + '\n')
+    for intf in cfg:
+        print(dir(intf))
+        print("\t" + "Interface Number:" + str(intf.bInterfaceNumber) + "," + str(intf.bAlternateSetting) + "\n")
+        for ep in intf:
+           # print(dir(ep))
+            print("\t\t" + "Endpoint Address: " + str(ep.bEndpointAddress))
+            print("\t\t" + "Endpoint Length: " + str(ep.bLength))
+            print("\t\t" + "Descriptor Type: " +  str(ep.bDescriptorType))
+            print("\t\t" + "Endpoint Attributes: " +  str(ep.bmAttributes))
+            print("\t\t" + "Interval: " +  str(ep.bInterval))
+            print("\t\t" + "Max Packet Size: " +  str(ep.wMaxPacketSize) + "\n")
+#, 'bEndpointAddress', 'bInterval', 'bLength', 'bRefresh', 'bSynchAddress', 'bmAttributes', 'clear_halt', 'device', 'extra_descriptors', 'index', 'read', 'wMaxPacketSize', 'write'
+#for d in dev:
+#   print d
+
+
 # Linux kernel sets up a device driver for USB device, which you have
 # to detach. Otherwise trying to interact with the device gives a
 # 'Resource Busy' error.
-try:
-   dev.detach_kernel_driver(0)
-except Exception, e:
-   pass # already unregistered
+#try:
+#   dev.detach_kernel_driver(0)
+#except Exception, e:
+#   pass # already unregistered
  
 # set the active configuration. With no arguments, the first
 # configuration will be the active one
-dev.set_configuration()
+#dev.set_configuration()
 
 #print device configurations
 #for cfg in dev:
@@ -79,17 +102,17 @@ dev.set_configuration()
 
 # Lets start by Reading 1 byte from the Device using different Requests
 # bRequest is a byte so there are 255 different values
-bmRequestType = 0x00
-bRequest = 5
-wValue = 0x0000
-wIndex = 0
-wLength = 64
-try:
-   ret = dev.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, wLength)
-   print ret
-except:
-   #FAIL!
-   pass
+#bmRequestType = 0x00
+#bRequest = 5
+#wValue = 0x0000
+#wIndex = 0
+#wLength = 64
+#try:
+#   ret = dev.ctrl_transfer(bmRequestType, bRequest, wValue, wIndex, wLength)
+#   print ret
+#except:
+#   #FAIL!
+#   pass
 #for bRequest in range(255):
 #   for bmRequestType in range(255):
 #      try:
@@ -102,4 +125,4 @@ except:
 #         # failed to get data for this request
 #         pass
  
-print "all done"
+#print "all done"
